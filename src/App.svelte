@@ -6,20 +6,10 @@
 
   let loading = false;
 
+  const apiurl = "https://generator-api-gtolrvmqsq-uc.a.run.app";
+
   // seperate by new line
   $: words = textarea.split(/\r?\n/);
-
-  async function fetch_text() {
-    let params = new URLSearchParams();
-    words.forEach((word) => params.append("q", word));
-    params.append("n", n.toString());
-
-    fetch("http://127.0.0.1:8000/getSentences/text?" + params.toString())
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-  }
 
   // fetch the file and blob
   async function fetch_text_file() {
@@ -27,7 +17,7 @@
     words.forEach((word) => params.append("q", word));
     params.append("n", n.toString());
 
-    fetch("http://127.0.0.1:8000/getSentences/textFile?" + params.toString())
+    fetch(apiurl + "/getSentences/textFile?" + params.toString())
       .then((response) => response.blob())
       .then((blob) => {
         console.log(blob);
@@ -48,7 +38,7 @@
     words.forEach((word) => params.append("q", word));
     params.append("n", n.toString());
 
-    fetch("http://127.0.0.1:8000/getSentences/docxFile?" + params.toString())
+    fetch(apiurl + "/getSentences/docxFile?" + params.toString())
       .then((response) => response.blob())
       .then((blob) => {
         console.log(blob);
@@ -70,7 +60,7 @@
     words.forEach((word) => params.append("q", word));
     params.append("n", n.toString());
 
-    fetch("http://127.0.0.1:8000/getSentences/pdfFile?" + params.toString())
+    fetch(apiurl + "/getSentences/pdfFile?" + params.toString())
       .then((response) => response.blob())
       .then((blob) => {
         console.log(blob);
@@ -140,8 +130,9 @@
         <div class="md:basis-1/2 w-full">
           <p class="font-sans font-bold text-5xl lg:mb-4">Create Your Own</p>
           <p class="font-sans font-bold text-5xl">
-            <a class="font-bold underline underline-offset-4 decoration-sky-500"
-              >Vocabulary</a
+            <span
+              class="font-bold underline underline-offset-4 decoration-sky-500"
+              >Vocabulary</span
             >
             Exercise!
           </p>
