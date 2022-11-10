@@ -26,7 +26,7 @@
         // download the file
         const a = document.createElement("a");
         a.href = url;
-        a.download = "text.txt";
+        a.download = "exercise.txt";
         document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
         a.click();
         a.remove(); //afterwards we remove the element again
@@ -48,7 +48,7 @@
         // download the file
         const a = document.createElement("a");
         a.href = url;
-        a.download = "text.docx";
+        a.download = "exercise.docx";
         document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
         a.click();
         a.remove(); //afterwards we remove the element again
@@ -70,7 +70,7 @@
         // download the file
         const a = document.createElement("a");
         a.href = url;
-        a.download = "text.pdf";
+        a.download = "exercise.pdf";
         document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
         a.click();
         a.remove(); //afterwards we remove the element again
