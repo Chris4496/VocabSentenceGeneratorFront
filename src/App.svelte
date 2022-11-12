@@ -1,4 +1,6 @@
 <script>
+  import { onMount } from "svelte";
+
   let words = [];
   let n = 1;
 
@@ -10,6 +12,11 @@
 
   // seperate by new line
   $: words = textarea.split(/\r?\n/);
+
+  // warm up the api
+  onMount(async () => {
+    await fetch(apiurl);
+  });
 
   // fetch the file and blob
   async function fetch_text_file() {
