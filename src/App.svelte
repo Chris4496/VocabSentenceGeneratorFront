@@ -180,7 +180,7 @@
           <textarea
             id="words"
             rows="4"
-            class="p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2 font-sans"
+            class="p-2.5 w-full text-md rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white mt-2 font-sans"
             placeholder="word
 word
 anotherword..."
