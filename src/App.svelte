@@ -7,6 +7,8 @@
   let textarea = "";
 
   let loading = false;
+  let generatedContent = "";
+  let showPreview = false;
 
   const apiurl = "https://generator-api-gtolrvmqsq-uc.a.run.app";
 
@@ -84,6 +86,41 @@
       });
   }
 
+  async function fetch_text_content() {
+    let params = new URLSearchParams();
+    words.forEach((word) => params.append("q", word));
+    params.append("n", n.toString());
+
+    try {
+      const response = await fetch(apiurl + "/getSentences/textFile?" + params.toString());
+      const text = await response.text();
+      return text;
+    } catch (error) {
+      console.error("Error fetching text content:", error);
+      return "";
+    }
+  }
+
+  async function generate_content() {
+    // check if the textarea is empty
+    if (textarea === "") {
+      alert("Please enter some words");
+      return;
+    }
+    loading = true;
+
+    try {
+      const content = await fetch_text_content();
+      generatedContent = content;
+      showPreview = true;
+    } catch (error) {
+      console.error("Error generating content:", error);
+      alert("Error generating content. Please try again.");
+    } finally {
+      loading = false;
+    }
+  }
+
   async function fetch_handler(type) {
     // check if the textarea is empty
     if (textarea === "") {
@@ -120,7 +157,6 @@
         </div>
         <div class="items-center justify-end md:flex md:flex-1 lg:w-0">
           <a
-            as="button"
             target="_blank"
             rel="noopener noreferrer"
             href="https://github.com/Chris4496/VocabSentenceGeneratorFront"
@@ -186,27 +222,42 @@ word
 anotherword..."
             bind:value={textarea}
           />
-          <h4 class="font-sans font-light">
-            Note: only enter one word per line
-          </h4>
-          <h3 class="font-sans font-bold text-xl mt-5">Generate:</h3>
-          <div class="flew flew-row flex-wrap justify-around">
+          <div class="flex items-center justify-between mt-5">
+            <h4 class="font-sans font-light">
+              Note: only enter one word per line
+            </h4>
             <button
-              on:click={() => fetch_handler("textFile")}
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"
-              >Text File (.txt)</button
-            >
-            <button
-              on:click={() => fetch_handler("docxFile")}
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"
-              >Word File (.docx)</button
-            >
-            <button
-              on:click={() => fetch_handler("pdfFile")}
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"
-              >PDF File (.pdf)</button
+              on:click={generate_content}
+              class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >Generate</button
             >
           </div>
+          {#if showPreview}
+            <h3 class="font-sans font-bold text-xl mt-5">Generated Content:</h3>
+            <div
+              class="p-2.5 h-64 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 my-2 font-sans overflow-auto"
+            >
+              <pre class="whitespace-pre-wrap">{generatedContent}</pre>
+            </div>
+            <h3 class="font-sans font-bold text-xl mt-5">Download Options:</h3>
+            <div class="flex flex-row flex-wrap justify-around">
+              <button
+                on:click={() => fetch_handler("textFile")}
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"
+                >Text File (.txt)</button
+              >
+              <button
+                on:click={() => fetch_handler("docxFile")}
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"
+                >Word File (.docx)</button
+              >
+              <button
+                on:click={() => fetch_handler("pdfFile")}
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-2 rounded"
+                >PDF File (.pdf)</button
+              >
+            </div>
+          {/if}
         </div>
       </div>
     </div>
@@ -214,7 +265,7 @@ anotherword..."
   {#if loading}
     <button
       on:click={() => (loading = false)}
-      class="fixed bottom-4 right-4 z-50 rounded-md bg-green-500 px-6 py-3 text-white transition hover:bg-green-600 translate-x-3"
+      class="fixed bottom-4 right-4 z-50 rounded-md bg-green-500 px-6 py-3 m-5 text-white transition hover:bg-green-600 translate-x-3"
     >
       <div class="flex items-center space-x-2">
         <span class="text-3xl"><i class="bx bx-check" /></span>
